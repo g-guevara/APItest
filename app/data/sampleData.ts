@@ -1,6 +1,7 @@
-// This file contains our sample JSON data with the structure:
-// date, category, name, mount (monetary amount)
+// Este archivo contiene nuestros datos de muestra con la estructura:
+// date, category, name, mount (monto monetario)
 
+// Definición de interfaces para transacciones
 export interface Transaction {
     id: number;
     date: string;
@@ -9,7 +10,33 @@ export interface Transaction {
     mount: number;
   }
   
-  // Sample transaction data - you can replace with your own
+  export interface PartialTransaction {
+    id?: number;
+    date?: string;
+    category?: string;
+    name?: string;
+    mount?: number;
+  }
+  
+  // Función auxiliar para agregar nuevas transacciones
+  export function addTransaction(transaction: PartialTransaction) {
+    // Validar y completar campos faltantes con valores predeterminados
+    const newTransaction: Transaction = {
+      id: transaction.id || Math.max(...transactionData.map(t => t.id)) + 1,
+      date: transaction.date || new Date().toISOString().split('T')[0],
+      category: transaction.category || "Otros",
+      name: transaction.name || "Transacción sin nombre",
+      mount: transaction.mount || 0
+    };
+  
+    // Agregar a la lista de transacciones
+    transactionData.push(newTransaction);
+    
+    // Devolver el ID de la nueva transacción
+    return newTransaction.id;
+  }
+  
+  // Datos de transacciones de muestra - puedes reemplazarlos con los tuyos propios
   export const transactionData: Transaction[] = [
     {
       id: 1,
@@ -82,3 +109,6 @@ export interface Transaction {
       mount: 14.99
     }
   ];
+  
+  // Exportación por defecto para solucionar la advertencia de rutas
+  export default { transactionData, addTransaction };

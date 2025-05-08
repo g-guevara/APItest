@@ -19,6 +19,20 @@ export default function RootLayout() {
             title: "Transaction Details",
           }} 
         />
+        <Stack.Screen 
+          name="scan" 
+          options={{ 
+            title: "Scan Receipt",
+            presentation: "modal",
+          }} 
+        />
+        <Stack.Screen 
+          name="scan-debug" 
+          options={{ 
+            title: "Scan Debug",
+            presentation: "modal",
+          }} 
+        />
       </Stack>
     </>
   );
