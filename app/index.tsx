@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Transaction, transactionData } from "./data/sampleData";
+import { getAllTransactions } from "./services/storage";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -10,8 +11,12 @@ export default function HomeScreen() {
 
   // Cargar todas las transacciones (incluidas las escaneadas)
   useEffect(() => {
-    // En una implementación real, aquí cargaríamos las transacciones guardadas
-    setTransactions(transactionData);
+    const loadAllTransactions = async () => {
+      const allTransactions = await getAllTransactions();
+      setTransactions(allTransactions);
+    };
+
+    loadAllTransactions();
   }, []);
 
   // Navigate to details screen with transaction data
@@ -25,11 +30,6 @@ export default function HomeScreen() {
   // Navigate to scan screen
   const handleScanPress = () => {
     router.push("/scan");
-  };
-  
-  // Navigate to debug scan screen
-  const handleDebugScanPress = () => {
-    router.push("/scan-debug");
   };
 
   // Format currency
@@ -82,14 +82,6 @@ export default function HomeScreen() {
         onPress={handleScanPress}
       >
         <Ionicons name="scan" size={24} color="white" />
-      </TouchableOpacity>
-      
-      {/* Botón flotante para versión debug de escaneo */}
-      <TouchableOpacity 
-        style={styles.debugButton}
-        onPress={handleDebugScanPress}
-      >
-        <Ionicons name="bug" size={24} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -179,22 +171,6 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     backgroundColor: "#3498db",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  debugButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 90, // Posicionado a la izquierda del botón de escaneo normal
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#e74c3c", // Color rojo para indicar modo debug
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",

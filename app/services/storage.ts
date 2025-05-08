@@ -47,6 +47,3 @@ export const saveTransaction = async (transaction: Transaction): Promise<boolean
 export const getAllTransactions = async (): Promise<Transaction[]> => {
   return await loadTransactions();
 };
-
-// Exportación por defecto para solucionar la advertencia de rutas
-export default { loadTransactions, saveTransaction, getAllTransactions };
